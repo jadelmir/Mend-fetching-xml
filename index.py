@@ -1,6 +1,5 @@
 import requests
 import xml.etree.ElementTree as ET
-import usaddress
 
 
 def fetchXmlData():
@@ -27,7 +26,7 @@ def ParseXmlToJson(XML):
     # init empty arr
     arr = [] 
     # create root of the tree
-    tree = ET.fromstring(XmlData)
+    tree = ET.fromstring(XML)
     # loop over every node AKA member 
     for child in tree:
         try:
@@ -48,9 +47,12 @@ def ParseXmlToJson(XML):
                 }
                 #push data to the array
                 arr.append(tempobj)
+    
         except ValueError :
             print("missing data in",child)
             pass
+    
+    return arr
       
     
 def Main():
@@ -58,10 +60,10 @@ def Main():
     XmlData = fetchXmlData()
     JsonArray = ParseXmlToJson(XmlData)
 
-    print(JsonArray)
+    print("json data is: \n",JsonArray)
 
 
 
-
+Main()
 
 
