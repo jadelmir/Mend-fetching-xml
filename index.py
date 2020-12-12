@@ -24,26 +24,41 @@ def ParseAddress(address , state ):
   
     
 def ParseXmlToJson(XML):
+    # init empty arr
+    arr = [] 
+    # create root of the tree
     tree = ET.fromstring(XmlData)
+    # loop over every node AKA member 
     for child in tree:
-        address = child[5].text
-        state = child[4].text
-        ParsedAddress  = ParseAddress(address,state)
-        print(ParsedAddress)
-       
-        tempobj = {
-            "firstName": child[2].text,
-            "lastName":  child[1].text,
-            "fullName": child[0].text,
-            "chartId": child[10].text,
-            "mobile": child[6].text,
-            "address": address
-        }
-        print(tempobj)
-        break
+        try:
+            #check if member  is not empty 
+            if len(child) > 0 :
+                address = child[5].text
+                state = child[4].text
 
-XmlData = fetchXmlData()
-ParseXmlToJson(XmlData)
+                ParsedAddress = ParseAddress(address, state)
+                #assign data to the correct formet as requested
+                tempobj = {
+                    "firstName": child[2].text,
+                    "lastName":  child[1].text,
+                    "fullName": child[0].text,
+                    "chartId": child[10].text,
+                    "mobile": child[6].text,
+                    "address": address
+                }
+                #push data to the array
+                arr.append(tempobj)
+        except ValueError :
+            print("missing data in",child)
+            pass
+      
+    
+def Main():
+
+    XmlData = fetchXmlData()
+    JsonArray = ParseXmlToJson(XmlData)
+
+    print(JsonArray)
 
 
 
